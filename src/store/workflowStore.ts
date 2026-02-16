@@ -360,41 +360,40 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   },
 
   loadSampleWorkflow: () => {
-    // Product Marketing Kit Generator - Demonstrates parallelism
+    // Car Analysis Workflow Sample
     const sampleNodes: WorkflowNode[] = [
-      // Input nodes
+      // Image node
       {
-        id: "img_product",
+        id: "img_car",
         type: "image",
         position: { x: 50, y: 150 },
         data: {
-          label: "Product Photo",
-          imageUrl: "/images/cetaphil-sample.jpg",
+          label: "Car Image",
+          imageUrl: "/images/car.jpg",
           imageBase64: null,
         },
       },
+      // Text node
       {
-        id: "text_specs",
+        id: "text_prompt",
         type: "text",
-        position: { x: 50, y: 400 },
+        position: { x: 50, y: 350 },
         data: {
-          label: "Product Name & Specs",
+          label: "Analysis Prompt",
           content:
-            "Cetaphil Paraben, Sulphate-Free Gentle Skin Hydrating Face Wash Cleanser with Niacinamide, Vitamin B5 for Dry to Normal, Sensitive Skin - 125ml",
+            "analyse the image, identify the vehicle in it, and give detailed information about the vehicle including company, pricing, make, engine, etc",
         },
       },
-      // Main analysis LLM (convergence point)
+      // Main LLM node (analyze)
       {
         id: "llm_analyze",
         type: "llm",
-        position: { x: 450, y: 200 },
+        position: { x: 400, y: 250 },
         data: {
-          label: "Analyze Product",
+          label: "Analyze Vehicle",
           model: "gemini-1.5-pro",
-          systemPrompt:
-            "You are a product analyst. Analyze the product image and specifications provided. Extract key selling points, target audience, and product benefits.",
-          userMessage:
-            "Analyze this product and provide: 1) Key selling points 2) Target audience 3) Product benefits 4) Competitive advantages",
+          systemPrompt: "You are an expert automobile analyst. Analyze the image and the prompt to identify the vehicle and provide detailed information.",
+          userMessage: "analyse the image, identify the vehicle in it, and give detailed information about the vehicle including company, pricing, make, engine, etc",
           response: null,
           generatedImage: null,
           isLoading: false,
@@ -402,17 +401,16 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           imageInputCount: 1,
         },
       },
-      // Parallel content generation LLMs (demonstrates parallelism)
+      // LLM node: Critic Report
       {
-        id: "llm_instagram",
+        id: "llm_critic",
         type: "llm",
-        position: { x: 900, y: 50 },
+        position: { x: 800, y: 150 },
         data: {
-          label: "Write Instagram Caption",
+          label: "Critic Report (India)",
           model: "gemini-1.5-pro",
-          systemPrompt: "Write engaging Instagram captions for products. Include relevant hashtags and call-to-action.",
-          userMessage:
-            "Create an engaging Instagram caption for this product with relevant hashtags. Make it compelling and shareable.",
+          systemPrompt: "you are an automobile enthusiast, write a brief critic report for this vehicle according to indian market and audience",
+          userMessage: "Write a brief critic report for this vehicle for the Indian market and audience.",
           response: null,
           generatedImage: null,
           isLoading: false,
@@ -420,33 +418,16 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           imageInputCount: 1,
         },
       },
+      // LLM node: Reviews & Pricing
       {
-        id: "llm_seo",
+        id: "llm_reviews",
         type: "llm",
-        position: { x: 900, y: 320 },
+        position: { x: 800, y: 350 },
         data: {
-          label: "Write SEO Meta Description",
+          label: "Reviews & Pricing (India)",
           model: "gemini-1.5-pro",
-          systemPrompt: "Write SEO-optimized meta descriptions. Keep under 160 characters, include keywords, and be compelling.",
-          userMessage:
-            "Write an SEO-optimized meta description (under 160 characters) for this product. Include key features and benefits.",
-          response: null,
-          generatedImage: null,
-          isLoading: false,
-          error: null,
-          imageInputCount: 1,
-        },
-      },
-      {
-        id: "llm_amazon",
-        type: "llm",
-        position: { x: 900, y: 590 },
-        data: {
-          label: "Write Amazon Listing",
-          model: "gemini-1.5-pro",
-          systemPrompt: "Write compelling Amazon product listings. Include title, bullet points, and detailed description.",
-          userMessage:
-            "Based on the product analysis, write a compelling Amazon product listing with: 1) Title (optimized for search) 2) 5 bullet points (key features) 3) Detailed description (benefits and usage)",
+          systemPrompt: "gather online reviews and other references and general pricing for this vehicle in india.",
+          userMessage: "Gather online reviews, references, and general pricing for this vehicle in India.",
           response: null,
           generatedImage: null,
           isLoading: false,
@@ -460,47 +441,37 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       // Image → LLM Analyze (Image input)
       {
         id: "e1",
-        source: "img_product",
+        source: "img_car",
         target: "llm_analyze",
         targetHandle: "images-0",
         animated: true,
         style: { stroke: "#34d399", strokeWidth: 2 },
       },
-      // Text Specs → LLM Analyze (User message input)
+      // Text Prompt → LLM Analyze (User message input)
       {
         id: "e2",
-        source: "text_specs",
+        source: "text_prompt",
         target: "llm_analyze",
         targetHandle: "user_message",
         animated: true,
         style: { stroke: "#c084fc", strokeWidth: 2 },
       },
-      // LLM Analyze → Write Amazon (User message input)
+      // LLM Analyze → Critic Report (User message input)
       {
         id: "e3",
         source: "llm_analyze",
         sourceHandle: "output",
-        target: "llm_amazon",
+        target: "llm_critic",
         targetHandle: "user_message",
         animated: true,
         style: { stroke: "#c084fc", strokeWidth: 2 },
       },
-      // LLM Analyze → Write Instagram (User message input)
+      // LLM Analyze → Reviews & Pricing (User message input)
       {
         id: "e4",
         source: "llm_analyze",
         sourceHandle: "output",
-        target: "llm_instagram",
-        targetHandle: "user_message",
-        animated: true,
-        style: { stroke: "#c084fc", strokeWidth: 2 },
-      },
-      // LLM Analyze → Write SEO (User message input)
-      {
-        id: "e5",
-        source: "llm_analyze",
-        sourceHandle: "output",
-        target: "llm_seo",
+        target: "llm_reviews",
         targetHandle: "user_message",
         animated: true,
         style: { stroke: "#c084fc", strokeWidth: 2 },
@@ -508,8 +479,8 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     ];
 
     set({
-      workflowId: "sample_product_marketing_kit",
-      workflowName: "Product Marketing Kit Generator",
+      workflowId: "sample_car_analysis",
+      workflowName: "Car Analysis & Market Report",
       nodes: sampleNodes,
       edges: sampleEdges,
       history: [],
