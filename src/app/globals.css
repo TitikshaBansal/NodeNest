@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #888888;
+  --border-color: #2a2a2a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* React Flow Customizations */
+.react-flow__node {
+  cursor: default;
+}
+
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #666;
+  border: 2px solid #888;
+}
+
+.react-flow__handle:hover {
+  background: #888;
+  transform: scale(1.2);
+}
+
+.react-flow__edge-path {
+  stroke: #444;
+  stroke-width: 2;
+}
+
+.react-flow__edge.animated path {
+  stroke-dasharray: 8;
+  animation: dashdraw 0.8s linear infinite;
+  filter: drop-shadow(0 0 3px rgba(192, 132, 252, 0.5));
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 16;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Enhanced edge animation for active connections */
+.react-flow__edge.selected path {
+  stroke: #a855f7 !important;
+  stroke-width: 3 !important;
+  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.8));
+}
+
+.react-flow__connection-line {
+  stroke: #666;
+  stroke-width: 2;
+}
+
+/* Minimap styles */
+.react-flow__minimap {
+  background: #111 !important;
+  border: 1px solid #2a2a2a !important;
+  border-radius: 4px !important;
+}
+
+/* Controls styles */
+.react-flow__controls {
+  background: #111 !important;
+  border: 1px solid #2a2a2a !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+}
+
+.react-flow__controls-button {
+  background: #111 !important;
+  border-color: #2a2a2a !important;
+  color: #666 !important;
+}
+
+.react-flow__controls-button:hover {
+  background: #1a1a1a !important;
+  color: #fff !important;
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor !important;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Selection styles */
+::selection {
+  background: rgba(100, 100, 100, 0.4);
+  color: #ffffff;
+}
+
+/* Focus styles */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 1px solid #555;
+  outline-offset: 1px;
+}
+
+/* Transition defaults */
+button,
+input,
+textarea,
+select {
+  transition: all 0.15s ease;
+}
+
+/* Pulsating effect for running nodes */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(229, 193, 0, 0.7);
+    border-color: rgba(229, 193, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(229, 193, 0, 0.4);
+    border-color: rgba(229, 193, 0, 0.8);
+  }
+}
+
+.node-running {
+  animation: pulse-glow 2s ease-in-out infinite;
+  border-color: rgba(229, 193, 0, 0.6) !important;
+}
+
+.node-completed {
+  border-color: rgba(34, 211, 153, 0.5) !important;
+  box-shadow: 0 0 10px rgba(34, 211, 153, 0.3);
+}
+
+.node-failed {
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}

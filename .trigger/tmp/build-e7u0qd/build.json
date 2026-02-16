@@ -1,0 +1,152 @@
+{
+  "build": {
+  },
+  "cliPackageVersion": "4.3.3",
+  "config": {
+    "dirs": [
+      "./src/trigger"
+    ],
+    "project": "proj_jeugxjjtwkaqjpzttezd"
+  },
+  "configPath": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\trigger.config.mjs",
+  "contentHash": "e1cf2e8ab46133f6a3b343c870da4f14",
+  "customConditions": [
+  ],
+  "deploy": {
+    "env": {
+    }
+  },
+  "environment": "dev",
+  "externals": [
+    {
+      "name": "import-in-the-middle",
+      "version": "1.11.0"
+    }
+  ],
+  "files": [
+    {
+      "entry": "src/trigger/index.ts",
+      "out": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\index.mjs"
+    },
+    {
+      "entry": "src/trigger/tasks/cropImage.ts",
+      "out": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\cropImage.mjs"
+    },
+    {
+      "entry": "src/trigger/tasks/extractFrame.ts",
+      "out": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\extractFrame.mjs"
+    },
+    {
+      "entry": "src/trigger/tasks/gemini.ts",
+      "out": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\gemini.mjs"
+    },
+    {
+      "entry": "src/trigger/tasks/index.ts",
+      "out": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\index.mjs"
+    }
+  ],
+  "indexWorkerEntryPoint": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\AppData\\Roaming\\npm-cache\\_npx\\f51a09bd0abf5f10\\node_modules\\trigger.dev\\dist\\esm\\entryPoints\\dev-index-worker.mjs",
+  "otelImportHook": {
+    "include": [
+    ]
+  },
+  "outputHashes": {
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\AppData\\Roaming\\npm-cache\\_npx\\f51a09bd0abf5f10\\node_modules\\trigger.dev\\dist\\esm\\entryPoints\\dev-index-worker.mjs": "U6uzv9kWwFo",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\AppData\\Roaming\\npm-cache\\_npx\\f51a09bd0abf5f10\\node_modules\\trigger.dev\\dist\\esm\\entryPoints\\dev-index-worker.mjs.map": "+d+ENCKx3BQ",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\AppData\\Roaming\\npm-cache\\_npx\\f51a09bd0abf5f10\\node_modules\\trigger.dev\\dist\\esm\\entryPoints\\dev-run-worker.mjs": "g4oiaxYUF1I",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\AppData\\Roaming\\npm-cache\\_npx\\f51a09bd0abf5f10\\node_modules\\trigger.dev\\dist\\esm\\entryPoints\\dev-run-worker.mjs.map": "7Q4jBywD4e8",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\index.mjs": "TFifQJtxSoc",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\index.mjs.map": "Evy6gHQhCcU",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\cropImage.mjs": "/BF4ufS2CJQ",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\cropImage.mjs.map": "0b4tlwmkM3g",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\extractFrame.mjs": "J7lEZptjfxs",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\extractFrame.mjs.map": "0b4tlwmkM3g",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\gemini.mjs": "PlbecViwd/Y",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\gemini.mjs.map": "0b4tlwmkM3g",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\index.mjs": "s1ZZUY4SNKw",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\src\\trigger\\tasks\\index.mjs.map": "C1/NcDP3GOw",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\trigger.config.mjs": "PcFFPa/lxJE",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\Downloads\\Nodefy-main\\Nodefy-main\\trigger.config.mjs.map": "7owDyXyfgh8",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-5PWG5ZSV.mjs": "bSlbSud0P/I",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-5PWG5ZSV.mjs.map": "g3LkIyGMyew",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-6NN2F7ES.mjs": "S2xNPdAmscw",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-6NN2F7ES.mjs.map": "Xiau3QTEfUE",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-BDSBGXMF.mjs": "2WgJJvAsdw4",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-BDSBGXMF.mjs.map": "gEEYCPWePyM",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-E5ZCWD2M.mjs": "MddPPCzg/VE",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-E5ZCWD2M.mjs.map": "cbTCw082msg",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-GXV2F6Q3.mjs": "TyisSj9FiRY",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-GXV2F6Q3.mjs.map": "kbgYl3+OTg0",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-N7MYH2VK.mjs": "TGgdCJU4iEc",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-N7MYH2VK.mjs.map": "3Qf04sL3CBE",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-OGANR6MT.mjs": "EiG2JPxy73I",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-OGANR6MT.mjs.map": "dkeRgMqfbjE",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-PZ26IPOH.mjs": "UqqZ82o230s",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-PZ26IPOH.mjs.map": "7TOTG4Uq8lU",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-T3TBKZDC.mjs": "lswpJHawClo",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-T3TBKZDC.mjs.map": "Onhgr0TZzbo",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-WQZ2OESC.mjs": "6SAlKCWUx50",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-WQZ2OESC.mjs.map": "XuoNPLwt+Tw",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-ZC2C5BMF.mjs": "nAxdxXuKyMw",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\chunk-ZC2C5BMF.mjs.map": "LMPzUuAiOIM",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\crypto.node-OZ73ZL7F.mjs": "zCCIjrNLhF0",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\crypto.node-OZ73ZL7F.mjs.map": "0b4tlwmkM3g",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\crypto.node-XKMGDYAL.mjs": "IzETWGBdrVU",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\crypto.node-XKMGDYAL.mjs.map": "Ef3lOuQwTCA",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\esm-ANPUXUKC.mjs": "AcsKJ6Aj2Ok",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\esm-ANPUXUKC.mjs.map": "VON93E1In1A",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\esm-X6BB4PSK.mjs": "xaoTveRADw0",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\esm-X6BB4PSK.mjs.map": "uBmAaVaFGqA",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-bsd-2U6FLWB4.mjs": "VKWzMkcSPac",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-bsd-2U6FLWB4.mjs.map": "IzNoBQ11pNI",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-darwin-NC5TOJIY.mjs": "PPgm+KblO4Y",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-darwin-NC5TOJIY.mjs.map": "jxggHabLdP8",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-linux-DPYVJ4YU.mjs": "aHc5WmrOqC0",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-linux-DPYVJ4YU.mjs.map": "lfrn38WqcY4",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-unsupported-R53QPEZ2.mjs": "O+5U5FDxIpY",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-unsupported-R53QPEZ2.mjs.map": "Nr8Ogety5C4",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-win-Y2HXJIQQ.mjs": "kEgvEE8RV3w",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\getMachineId-win-Y2HXJIQQ.mjs.map": "tuRO7n2wxe0",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\s2s-4MMOCLIY.mjs": "pbHirAK+mm0",
+    "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\s2s-4MMOCLIY.mjs.map": "mkZ/ElkfA38"
+  },
+  "outputPath": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd",
+  "packageVersion": "4.3.3",
+  "runWorkerEntryPoint": "C:\\Users\\chakshu\\Downloads\\Nodefy-main\\Nodefy-main\\.trigger\\tmp\\build-e7u0qd\\AppData\\Roaming\\npm-cache\\_npx\\f51a09bd0abf5f10\\node_modules\\trigger.dev\\dist\\esm\\entryPoints\\dev-run-worker.mjs",
+  "runtime": "node",
+  "sources": {
+    "package.json": {
+      "contentHash": "3fbff28f399a3a99fed043e53ac57725",
+      "contents": "eJxtU8uS2yAQvOsrKJ1Xo4elzdqnPeQ7XIVhViHGoAIke7O1/54CZEQc36C7Z5jpGb4KQkpFL1geSHnV5vwh9bU6zUJyNOWLZxc0VmjlBQ200ER0MmKhzoc5M2OALDNicrY8kK+CEEJKjouPUnhzxJ9fIhyyJyLeVso6alyi4m2lpFCBQRtOK8pPhxEVmliKr8peKEnQpppm+ytT8BMJyCa4iPEhy4rkpfPTwbqZC53JVqAg5DvYwHFCxVExgZkX70yiOde+r98eLo8DNKuZnh61HiXWa+ViwYqKIGug66FNuvhozaTA6MdxgHafJXJGjCMa4LjUlp+9pIcd7JLg9ulnXBukLCZoO2izUuTMBMdq4xsYXruN9y3EuAHaLW/St3voHuCK68v/lF3ELSaCt2HL7wxVVmrKRXymhx/Q38k/OmzOcQfdDt4SOltHFU+27vNpLD+fD8RRIa9CcWZtPWnrmI1z6TcrPye0tdI8bMWxax6YzML9M+redkav2+vBB6xiWn2Isbrb276mz0buu/Zk3lkX/1Yf6gg/MkYFS4rv4i/5LQ9t"
+    },
+    "src/trigger/index.ts": {
+      "contentHash": "8c8ba4443c3fb153a8da3496ee38e398",
+      "contents": "eJy9U01vm0AQvSPxH0aoBywR+47lqlKVRLlEVZWo16xgTFaGWTQ7FFuE/17t8lGIk2N7As289+a9YdBVbVigA1H2BD0c2VQQfRPWRYG8zfH3zuanaB8GekIWSMhK8B4rTfq7IUGSmbrdOSW7K3x3RczY1A+VKvAKPHdWeDwLq0zuWFXXlGXTscJAkyAfVYbwy/DpWJr20eT4Q11Ko3LowgCATI5PlxpTiMqyiuANIjfav7wXHNAPeQpWWFPhS+2o/LOhdx1NdSM2BUWXfRj0zhCefZDMkJWZ6Tw9uV0f/Mpj70vnKUQT4sbNvcEzZo1oQ1HitAC4oRSUvVAGcT2ESj9KuoHD1yEtjKO7OXcyZkrWQZLRPfRwgFF7P0wFsK2W7BXiSWMziQNkyuKwyXQqATBKwwSqVVo+vpXteF1x95c1bTtZltYml53B76LUb2bDky//ZT8zNl/cfzKzuq7PTC1B/9xXjkfVlLLwIq9sWiBs4ZbZcPzyTCcyLfmpIP6/+dJNd9C/bPYDt3ePPgkDr/8HrTdJzQ=="
+    },
+    "src/trigger/tasks/cropImage.ts": {
+      "contentHash": "1214b727cfdb137a2bb2aefe35273561",
+      "contents": "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"
+    },
+    "src/trigger/tasks/extractFrame.ts": {
+      "contentHash": "ea28c12df7a610e651716db65a9f16bb",
+      "contents": "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"
+    },
+    "src/trigger/tasks/gemini.ts": {
+      "contentHash": "a15654454c755f6a9bc8a3ab0409a3d0",
+      "contents": "eJytV21v4zYM/l6g/4EzioODJc4Ve/ngwNf1dl0XbB2K7g7DkGZX1aYdrbZkSHLTIOf/Pki2Y8lJu91w+RKEIh+SDymRoUXJhYItKCIfoIZU8AK8H5SgWYYiSPBxKpMHb3Z8RDvNS86zHC+RoSCKPuL5vLfLzNk02x1OCHWM31ZpimJncG9+ao3jI8oUipTECJdYUEavySbnJIHt8REA4wnOkxCkEpRlMy1ac/GQ5nx9U7HBCWVlpWTYWAIUPMH8zNEAkBupsLgWvCjV8KySKA6fxJwpZHtiWpAM5U66WBp5PTs+qnVm+GSyjzmTClpusEnyxwYQIlMA30RMkxC8Tm2SGb1J69kba0AAgUps+gzJ07lSWJQ662/GxnmnWLEQiNywGPyyYTR0CR5B9KYDakLctnSPXY7HLbFQQwQt1qzxAjCdwgeJxoCyrOEcGClQwgRSkuf3JH5oWYecPiBIyrIcJ9rVBJ8wrhQ2UDmq1j7SPJj0T4PvJmlO5GqSE4VSeR3zKfhNVEFTBHj1ChxBkCPL1ArewOtRlyYcxC8F36HrfK4Fb/VWhCU5SnikknIG96gUigaqbr5s+uzWgqiLxpbObPW+23plS3Z21gnbFtASz3Mg2tQjN3OtaFrRCU4Rod7TAiGCd0RhwPjaH+2UlNj0JGlyvyoFj1HKANljcHlxNf9t/vH8ev7xl4s/LToB1ErwNTBcw4UQXPieqwuMmwuQ0qwSmHijWWdad66hvyDnc4gM1v5b478Qz2wIpEt71VbawAYZqh7NHPnbtsh1z0KHUBKhbxRhm8USIptM0/CT5z+W1s+medoafZ51ygX4VonnurzA0xbMKYAuVv8LLIPA1Fz+QdXK91ZKleF06o3g06f/qC6Nfq/suB20jM2egbxBWXImdbuRNaEKUlTxyu/d9VXbs22HRWfp4AVECLJpNPzDGPdE4vffviOKQNQOnkCPHd8CHwWK/24ebd9r9D27DWy49vq935QIkasAg9hWSBIUUneb77V2E7Up0dAOntGe/l1i5h2MvKAFNn5sr4Esc6p8b+aNFq+Xe1GaZg3KSq787V54LKcMNRXhsFb6k5iDnq/xvkoX0t5RPZDUbjFqiImKV+CjfhZGhzqF5xiYU3+IffcToTkmoHjTNg3Nze5wsu17qA7v9uIyiK5wEFn/owbMJbqxTafw1hBi2IEPN7/apwc6zLpBlMV5laD0vbF9cfTnzLlpTUHH3mhxunT1QktvUGozH/sOebabzGw8fK1NwRs7b3SwKI2LK1M7J7dCi/xpj3A79Rd/zZZfj6bDa6gD2KHseQE7ibsmmJPtTn9xuqzvBoD1oH72z+fb/8Xm/9fWf6bx3bZ3mn4XZf0/psV5koDCJwWlGf+fZ68Jt/cMh3OLoLuTra1W37JbdrLtl476zprPe3fDAupNXhjoAmWVq90zbo3loNty2zXYrlz78MkQFlsQPMcQPO3OGzcBQL3cleDA6DYcRq3vQHQvsxb7w0UhqfQ+wJmzEsGk35UsdIGqEsymQ1axXkhCUKKyu4RXqqxUaCKxxJ0zS9Ru273AXbt3WbZhu0+qWU+sQn/RlFKSSzun1qP5CgqUUj/HeqL1D3VXUrD+sXzB3Lv/Nqbk/wB3DxYF"
+    },
+    "src/trigger/tasks/index.ts": {
+      "contentHash": "bc83f53b0e115934af24fe66b9008668",
+      "contents": "eJxVy0EKgzAQheG94B0GD2AO4FLa0n0vMOhzCDWJjIMI4t1FC5Ju//c95+ixTkmNeBzpo14EWvdYyHj+zmWB37qRIELZ8ELw0bcpGqLRToOmQFXt5OpVk106TdM7sCBjd/uTWE25s6dyyHGeT18WBytcO8Q="
+    },
+    "trigger.config.ts": {
+      "contentHash": "b77f8cdf76e5f694647370eea8dca223",
+      "contents": "eJxlUMFqwzAMvQfyD8KnDUKTrTf30rFeCttttzGGFyvGaWxnspKFlP77aBIyyi6SeE/v6SHr2kAMZ9BYWY/PwVfWwAUqCg7Enskag7TR2OdRn8QuTdIEh0mjsVJdwzfKu3OaALQUaixZgrhOnzV2Zqhr/jmp77odmXHUIrsuNsG8YI+NBNEEM2NODYeOFNvgJWyLYgIJmSxGCZM/AHr11aA++gP2Epg6zGZiCbUuTn5PzOhajhK22Qpb/2Ydho6P/jVKeCiWU4vmH/nHVqrkQBIeV4SU18HZEW+yXKY+V20pSngXmzxSmS9vFR9Zmlzud2nyC8i6c2U="
+    },
+    "tsconfig.json": {
+      "contentHash": "d37b9cf9c03ef64c07a92a78d1227924",
+      "contents": "eJxtUU1Lw0AQvQf8D8MegybqRehJkB4sFkGPUiTJDu3a/WJ3EiOl/112k7VN6ml57828mXl7yABYY5QVEt2rJWG0Zws4ZAAAjCq3RWILYMv3+9u7B3Y98FLUbAEfEQAwbtSoDKAQhK6qJZ5Y9Bp7YhFuRpdKSvO9CuPItTiSfi/si6ifdtjsZwo50dCU02apxIxDvza8lfisCZ2xU1FFKVw0bjTh39Ab2YYQQkXdai7RpRIXxA5X3uh1cjlzFt7IipAP2uyqL98HR+vQo+tSLkzoxqFCTZWc1lvZbkX8iRTyYXzD0ZWKF5wSBThOkrUV7U7fCMAey/zMC4AVpXdNmaf2TZZMjsEiLCZbjn89cdYN6q7gBfm0fp6X+SXsEy5CU0k/Fn05Kx0kjt3/coSKfFgv3sSwny9kOH6qMetQlh2vsl9a+Lu4"
+    }
+  },
+  "target": "dev"
+}

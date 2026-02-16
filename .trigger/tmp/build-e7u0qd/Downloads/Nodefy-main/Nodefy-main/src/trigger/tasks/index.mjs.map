@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../../../src/trigger/tasks/index.ts"],
+  "sourcesContent": ["// Export all Trigger.dev tasks\r\nexport { generateGeminiContent } from \"./gemini\";\r\nexport { cropImage } from \"./cropImage\";\r\nexport { extractFrame } from \"./extractFrame\";\r\n\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAA;",
+  "names": []
+}
