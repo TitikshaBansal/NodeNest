@@ -51,7 +51,7 @@ NodeNest is a visual, node-based AI workflow platform for building, managing, an
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/yourusername/NodeNest.git
+git clone https://github.com/TitikshaBansal/NodeNest.git
 cd NodeNest
 npm install
 ```
