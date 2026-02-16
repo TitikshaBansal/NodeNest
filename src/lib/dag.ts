@@ -1,6 +1,5 @@
 /**
- * DAG (Directed Acyclic Graph) Execution Engine
- * Handles topological sorting, cycle detection, and parallel execution
+ * DAG (Directed Acyclic Graph) utilities for workflow execution
  */
 
 export interface Node {
@@ -19,59 +18,59 @@ export interface Edge {
 
 export interface ExecutionNode {
   node: Node;
-  dependencies: string[]; // IDs of nodes that must complete before this
-  dependents: string[]; // IDs of nodes that depend on this
-  status: "pending" | "ready" | "running" | "completed" | "failed";
-  inputs: Record<string, any>;
+  status: "pending" | "running" | "completed" | "failed";
+  dependencies: string[];
   output?: any;
   error?: string;
 }
 
 /**
- * Detect cycles in the graph using DFS
+ * Detect cycles in a directed graph using DFS
+ * Returns the cycle path if found, null otherwise
  */
 export function detectCycles(nodes: Node[], edges: Edge[]): string[] | null {
-  const graph = new Map<string, string[]>();
+  const adjacencyList = new Map<string, string[]>();
   const visited = new Set<string>();
-  const recStack = new Set<string>();
-  const cycle: string[] = [];
+  const recursionStack = new Set<string>();
 
   // Build adjacency list
-  for (const edge of edges) {
-    if (!graph.has(edge.source)) {
-      graph.set(edge.source, []);
-    }
-    graph.get(edge.source)!.push(edge.target);
+  for (const node of nodes) {
+    adjacencyList.set(node.id, []);
   }
 
-  function dfs(nodeId: string): boolean {
-    visited.add(nodeId);
-    recStack.add(nodeId);
-    cycle.push(nodeId);
+  for (const edge of edges) {
+    const neighbors = adjacencyList.get(edge.source) || [];
+    neighbors.push(edge.target);
+    adjacencyList.set(edge.source, neighbors);
+  }
 
-    const neighbors = graph.get(nodeId) || [];
+  // DFS helper
+  function dfs(nodeId: string, path: string[]): string[] | null {
+    visited.add(nodeId);
+    recursionStack.add(nodeId);
+    path.push(nodeId);
+
+    const neighbors = adjacencyList.get(nodeId) || [];
     for (const neighbor of neighbors) {
       if (!visited.has(neighbor)) {
-        if (dfs(neighbor)) {
-          return true;
-        }
-      } else if (recStack.has(neighbor)) {
+        const cycle = dfs(neighbor, [...path]);
+        if (cycle) return cycle;
+      } else if (recursionStack.has(neighbor)) {
         // Cycle detected
-        cycle.push(neighbor);
-        return true;
+        const cycleStart = path.indexOf(neighbor);
+        return path.slice(cycleStart).concat(neighbor);
       }
     }
 
-    recStack.delete(nodeId);
-    cycle.pop();
-    return false;
+    recursionStack.delete(nodeId);
+    return null;
   }
 
+  // Check all nodes
   for (const node of nodes) {
     if (!visited.has(node.id)) {
-      if (dfs(node.id)) {
-        return cycle;
-      }
+      const cycle = dfs(node.id, []);
+      if (cycle) return cycle;
     }
   }
 
@@ -80,27 +79,25 @@ export function detectCycles(nodes: Node[], edges: Edge[]): string[] | null {
 
 /**
  * Topological sort using Kahn's algorithm
- * Returns nodes in execution order (dependencies first)
+ * Returns nodes in execution order
  */
 export function topologicalSort(nodes: Node[], edges: Edge[]): Node[] {
+  const adjacencyList = new Map<string, string[]>();
   const inDegree = new Map<string, number>();
-  const graph = new Map<string, string[]>();
 
-  // Initialize in-degree for all nodes
+  // Initialize
   for (const node of nodes) {
+    adjacencyList.set(node.id, []);
     inDegree.set(node.id, 0);
-    graph.set(node.id, []);
   }
 
-  // Build graph and calculate in-degrees
+  // Build graph
   for (const edge of edges) {
-    const neighbors = graph.get(edge.source) || [];
-    neighbors.push(edge.target);
-    graph.set(edge.source, neighbors);
+    adjacencyList.get(edge.source)?.push(edge.target);
     inDegree.set(edge.target, (inDegree.get(edge.target) || 0) + 1);
   }
 
-  // Find all nodes with no incoming edges
+  // Find nodes with no dependencies
   const queue: string[] = [];
   for (const [nodeId, degree] of inDegree.entries()) {
     if (degree === 0) {
@@ -108,67 +105,48 @@ export function topologicalSort(nodes: Node[], edges: Edge[]): Node[] {
     }
   }
 
-  const result: Node[] = [];
-  const nodeMap = new Map(nodes.map((n) => [n.id, n]));
-
-  // Process nodes
+  const sorted: Node[] = [];
   while (queue.length > 0) {
     const nodeId = queue.shift()!;
-    result.push(nodeMap.get(nodeId)!);
+    const node = nodes.find((n) => n.id === nodeId)!;
+    sorted.push(node);
 
-    const neighbors = graph.get(nodeId) || [];
-    for (const neighbor of neighbors) {
+    for (const neighbor of adjacencyList.get(nodeId) || []) {
       const newDegree = (inDegree.get(neighbor) || 0) - 1;
       inDegree.set(neighbor, newDegree);
-
       if (newDegree === 0) {
         queue.push(neighbor);
       }
     }
   }
 
-  // Check if all nodes were processed (no cycles)
-  if (result.length !== nodes.length) {
-    throw new Error("Graph contains cycles or disconnected nodes");
+  if (sorted.length !== nodes.length) {
+    throw new Error("Graph contains a cycle");
   }
 
-  return result;
+  return sorted;
 }
 
 /**
- * Build execution graph with dependency information
+ * Build execution graph with dependency tracking
  */
-export function buildExecutionGraph(
-  nodes: Node[],
-  edges: Edge[]
-): Map<string, ExecutionNode> {
+export function buildExecutionGraph(nodes: Node[], edges: Edge[]): Map<string, ExecutionNode> {
   const executionNodes = new Map<string, ExecutionNode>();
 
   // Initialize execution nodes
   for (const node of nodes) {
     executionNodes.set(node.id, {
       node,
-      dependencies: [],
-      dependents: [],
       status: "pending",
-      inputs: {},
+      dependencies: [],
     });
   }
 
-  // Build dependency graph
+  // Set dependencies
   for (const edge of edges) {
-    const source = executionNodes.get(edge.source);
-    const target = executionNodes.get(edge.target);
-
-    if (source && target) {
-      // Target depends on source
-      if (!target.dependencies.includes(edge.source)) {
-        target.dependencies.push(edge.source);
-      }
-      // Source has target as dependent
-      if (!source.dependents.includes(edge.target)) {
-        source.dependents.push(edge.target);
-      }
+    const execNode = executionNodes.get(edge.target);
+    if (execNode && !execNode.dependencies.includes(edge.source)) {
+      execNode.dependencies.push(edge.source);
     }
   }
 
@@ -178,20 +156,20 @@ export function buildExecutionGraph(
 /**
  * Get nodes that are ready to execute (all dependencies completed)
  */
-export function getReadyNodes(
-  executionNodes: Map<string, ExecutionNode>
-): ExecutionNode[] {
+export function getReadyNodes(executionNodes: Map<string, ExecutionNode>): ExecutionNode[] {
   const ready: ExecutionNode[] = [];
 
   for (const execNode of executionNodes.values()) {
-    if (execNode.status === "pending") {
-      const allDependenciesCompleted = execNode.dependencies.every(
-        (depId) => executionNodes.get(depId)?.status === "completed"
-      );
+    if (execNode.status !== "pending") continue;
 
-      if (allDependenciesCompleted) {
-        ready.push(execNode);
-      }
+    // Check if all dependencies are completed
+    const allDepsCompleted = execNode.dependencies.every((depId) => {
+      const depNode = executionNodes.get(depId);
+      return depNode?.status === "completed";
+    });
+
+    if (allDepsCompleted) {
+      ready.push(execNode);
     }
   }
 
@@ -199,7 +177,7 @@ export function getReadyNodes(
 }
 
 /**
- * Collect inputs for a node from its dependencies
+ * Collect inputs from dependency nodes
  */
 export function collectNodeInputs(
   nodeId: string,
@@ -209,73 +187,41 @@ export function collectNodeInputs(
 ): Record<string, any> {
   const inputs: Record<string, any> = {};
 
-  // Find all edges that target this node
+  // Get incoming edges
   const incomingEdges = edges.filter((e) => e.target === nodeId);
 
-  for (const edge of incomingEdges) {
-    const sourceNode = executionNodes.get(edge.source);
-    if (sourceNode && sourceNode.status === "completed" && sourceNode.output) {
-      const targetHandle = edge.targetHandle || "default";
-      const sourceHandle = edge.sourceHandle || "output";
+  // Special handling for LLM nodes - collect images
+  if (nodeType === "llm") {
+    const images: string[] = [];
 
-      // LLM node handles
-      if (nodeType === "llm") {
-        if (targetHandle === "system_prompt") {
-          inputs.systemPrompt = sourceNode.output;
-        } else if (targetHandle === "user_message") {
-          inputs.userPrompt = sourceNode.output; // Map to userPrompt for Trigger.dev task
-        } else if (targetHandle?.startsWith("images-")) {
-          if (!inputs.images) {
-            inputs.images = [];
-          }
-          inputs.images.push(sourceNode.output);
-        }
-      }
-      // Crop Image node handles
-      else if (nodeType === "crop") {
-        if (targetHandle === "image_url") {
-          inputs.imageUrl = sourceNode.output;
-        } else if (targetHandle === "x_percent") {
-          inputs.xPercent = parseFloat(sourceNode.output) || 0;
-        } else if (targetHandle === "y_percent") {
-          inputs.yPercent = parseFloat(sourceNode.output) || 0;
-        } else if (targetHandle === "width_percent") {
-          inputs.widthPercent = parseFloat(sourceNode.output) || 100;
-        } else if (targetHandle === "height_percent") {
-          inputs.heightPercent = parseFloat(sourceNode.output) || 100;
-        }
-      }
-      // Extract Frame node handles
-      else if (nodeType === "extractFrame") {
-        if (targetHandle === "video_url") {
-          inputs.videoUrl = sourceNode.output;
-        } else if (targetHandle === "timestamp") {
-          inputs.timestamp = sourceNode.output;
-        }
-      }
-      // Legacy/fallback handling
-      else {
-        if (sourceHandle === "output") {
-          // Text output
-          if (targetHandle === "prompt" || targetHandle === "user_message") {
-            inputs.userPrompt = sourceNode.output;
-          } else {
-            inputs[targetHandle] = sourceNode.output;
-          }
-        } else if (sourceHandle === "image-output" || targetHandle?.startsWith("image-") || targetHandle?.startsWith("images-")) {
-          // Image output
-          if (!inputs.images) {
-            inputs.images = [];
-          }
-          inputs.images.push(sourceNode.output);
+    for (const edge of incomingEdges) {
+      const sourceNode = executionNodes.get(edge.source);
+      if (sourceNode?.status === "completed" && sourceNode.output) {
+        const targetHandle = edge.targetHandle || "input";
+
+        if (targetHandle === "image" || targetHandle === "images") {
+          // Collect images
+          images.push(sourceNode.output);
         } else {
-          // Default: use output directly
+          // Other inputs
           inputs[targetHandle] = sourceNode.output;
         }
+      }
+    }
+
+    if (images.length > 0) {
+      inputs.images = images;
+    }
+  } else {
+    // Standard input collection for other node types
+    for (const edge of incomingEdges) {
+      const sourceNode = executionNodes.get(edge.source);
+      if (sourceNode?.status === "completed" && sourceNode.output !== undefined) {
+        const targetHandle = edge.targetHandle || "input";
+        inputs[targetHandle] = sourceNode.output;
       }
     }
   }
 
   return inputs;
 }
-

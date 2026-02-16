@@ -4,7 +4,7 @@ import { detectCycles } from "./dag";
 // Workflow validation schema
 const NodeSchema = z.object({
   id: z.string(),
-  type: z.enum(["text", "image", "llm", "crop", "extractFrame"]),
+  type: z.enum(["text", "image", "video", "llm", "cropImage", "extractFrame"]),
   position: z.object({
     x: z.number(),
     y: z.number(),
@@ -126,4 +126,3 @@ export function validateWorkflow(json: string): {
     workflow: structureValidation.workflow,
   };
 }
-
