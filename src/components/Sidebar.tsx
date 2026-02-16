@@ -66,10 +66,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onDragStart, onExecute, isExecuting, 
 
     useEffect(() => {
         if (focusSearch && isExpanded && searchInputRef.current) {
-            setTimeout(() => searchInputRef.current?.focus(), 300);
-            setFocusSearch(false);
+            setTimeout(() => {
+            searchInputRef.current?.focus();
+            setFocusSearch(false); // Move inside setTimeout
+            }, 300);
         }
-    }, [focusSearch, isExpanded]);
+        }, [focusSearch, isExpanded]);
 
     const handleExport = useCallback(() => {
         const json = exportWorkflow();

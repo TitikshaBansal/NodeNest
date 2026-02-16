@@ -267,7 +267,7 @@ export async function executeWorkflow(
 
           // Merge with node's own data
           // For crop nodes, merge percentage values from node data if not connected
-          let nodeInputs: any = {
+          const nodeInputs: any = {
             ...execNode.node.data,
             ...inputs,
           };
