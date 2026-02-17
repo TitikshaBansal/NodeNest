@@ -64,13 +64,62 @@ async function executeNode(
     }
 
     if (nodeType === "cropImage" || nodeType === "crop") {
-      console.warn(`[Executor] ${nodeType} node not fully implemented, passing through`);
-      return { success: true, output: inputs.imageUrl || "", duration: Date.now() - startTime };
+      const { runs } = await import("@trigger.dev/sdk");
+      const { cropImage } = await import("../trigger/tasks/cropImage");
+
+      const handle = await cropImage.trigger({
+        nodeId,
+        workflowRunId,
+        inputs: {
+          imageUrl: inputs.imageUrl || inputs.input || "",
+          xPercent: inputs.xPercent ?? 0,
+          yPercent: inputs.yPercent ?? 0,
+          widthPercent: inputs.widthPercent ?? 100,
+          heightPercent: inputs.heightPercent ?? 100,
+        },
+      });
+
+      // Poll until complete
+      let run = await runs.retrieve(handle.id);
+      while (run.status === "WAITING" || run.status === "DEQUEUED" || run.status === "DELAYED" || run.status === "PENDING_VERSION") {
+        await new Promise(r => setTimeout(r, 2000));
+        run = await runs.retrieve(handle.id);
+      }
+
+      const cropFailed = run.status === "FAILED" || run.status === "CRASHED" || run.status === "SYSTEM_FAILURE" || run.status === "TIMED_OUT" || run.status === "CANCELED" || run.status === "EXPIRED";
+      if (cropFailed || run.status !== "COMPLETED" || !run.output?.success) {
+        throw new Error(run.output?.error || `Crop image task ended with status: ${run.status}`);
+      }
+
+      return { success: true, output: run.output.output, duration: Date.now() - startTime };
     }
 
     if (nodeType === "extractFrame") {
-      console.warn("[Executor] extractFrame node not fully implemented, passing through");
-      return { success: true, output: inputs.videoUrl || "", duration: Date.now() - startTime };
+      const { runs } = await import("@trigger.dev/sdk");
+      const { extractFrame } = await import("../trigger/tasks/extractFrame");
+
+      const handle = await extractFrame.trigger({
+        nodeId,
+        workflowRunId,
+        inputs: {
+          videoUrl: inputs.videoUrl || inputs.input || "",
+          timestamp: inputs.timestamp || "50%",
+        },
+      });
+
+      // Poll until complete
+      let run = await runs.retrieve(handle.id);
+      while (run.status === "WAITING" || run.status === "DEQUEUED" || run.status === "DELAYED" || run.status === "PENDING_VERSION") {
+        await new Promise(r => setTimeout(r, 2000));
+        run = await runs.retrieve(handle.id);
+      }
+
+      const extractFailed = run.status === "FAILED" || run.status === "CRASHED" || run.status === "SYSTEM_FAILURE" || run.status === "TIMED_OUT" || run.status === "CANCELED" || run.status === "EXPIRED";
+      if (extractFailed || run.status !== "COMPLETED" || !run.output?.success) {
+        throw new Error(run.output?.error || `Extract frame task ended with status: ${run.status}`);
+      }
+
+      return { success: true, output: run.output.output, duration: Date.now() - startTime };
     }
 
     throw new Error(`Unknown node type: ${nodeType}`);
