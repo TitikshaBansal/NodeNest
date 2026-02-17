@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 // GET - Get all workflow runs with node runs
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: any
 ) {
   try {
     const { userId } = await auth();

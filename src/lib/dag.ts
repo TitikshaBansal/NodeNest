@@ -162,13 +162,13 @@ export function getReadyNodes(executionNodes: Map<string, ExecutionNode>): Execu
   for (const execNode of executionNodes.values()) {
     if (execNode.status !== "pending") continue;
 
-    // Check if all dependencies are completed
-    const allDepsCompleted = execNode.dependencies.every((depId) => {
+    // Check if all dependencies are completed OR failed (either way, unblocked)
+    const allDepsResolved = execNode.dependencies.every((depId) => {
       const depNode = executionNodes.get(depId);
-      return depNode?.status === "completed";
+      return depNode?.status === "completed" || depNode?.status === "failed";
     });
 
-    if (allDepsCompleted) {
+    if (allDepsResolved) {
       ready.push(execNode);
     }
   }

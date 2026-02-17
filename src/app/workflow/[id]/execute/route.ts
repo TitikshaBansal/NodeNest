@@ -8,7 +8,7 @@ import { executeWorkflow } from "@/lib/workflowExecutor";
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: any
 ) {
   try {
     const { userId } = await auth();
