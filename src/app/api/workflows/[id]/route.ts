@@ -103,31 +103,47 @@ export async function PUT(
             return NextResponse.json({ error: "Workflow not found" }, { status: 404 });
         }
 
-        // ✅ THE FIX: Use frontend node IDs directly - do NOT generate new IDs!
-        // Generating new IDs on every save was causing the foreign key errors.
-        const nodesToCreate = (body.nodes || []).map((node: any) => ({
-            id: node.id,           // ← Use frontend ID as-is
-            workflowId: id,
-            type: node.type,
-            positionX: node.position?.x ?? 0,
-            positionY: node.position?.y ?? 0,
-            data: node.data ?? {},
-        }));
-
-        // Build a set of valid node IDs for edge validation
-        const nodeIdSet = new Set(nodesToCreate.map((n: any) => n.id));
+        // ✅ Use frontend node IDs directly + deduplicate to prevent unique constraint errors
+        // Duplicates can occur if the store accumulates nodes without proper deduplication
+        const seenNodeIds = new Set<string>();
+        const nodesToCreate = (body.nodes || [])
+            .filter((node: any) => {
+                if (!node.id || seenNodeIds.has(node.id)) {
+                    console.warn(`[PUT] Skipping duplicate/invalid node ID: ${node.id}`);
+                    return false;
+                }
+                seenNodeIds.add(node.id);
+                return true;
+            })
+            .map((node: any) => ({
+                id: node.id,
+                workflowId: id,
+                type: node.type,
+                positionX: node.position?.x ?? 0,
+                positionY: node.position?.y ?? 0,
+                data: node.data ?? {},
+            }));
 
         // Only create edges where both source and target exist in this save
+        const seenEdgeIds = new Set<string>();
         const edgesToCreate = (body.edges || [])
             .filter((edge: any) => {
-                const valid = nodeIdSet.has(edge.source) && nodeIdSet.has(edge.target);
-                if (!valid) {
-                    console.warn(`Skipping edge with missing node: ${edge.source} → ${edge.target}`);
+                const validNodes = seenNodeIds.has(edge.source) && seenNodeIds.has(edge.target);
+                if (!validNodes) {
+                    console.warn(`[PUT] Skipping edge with missing node: ${edge.source} → ${edge.target}`);
+                    return false;
                 }
-                return valid;
+                // Also deduplicate edges
+                const edgeKey = `${edge.source}-${edge.target}-${edge.sourceHandle}-${edge.targetHandle}`;
+                if (seenEdgeIds.has(edgeKey)) {
+                    console.warn(`[PUT] Skipping duplicate edge: ${edgeKey}`);
+                    return false;
+                }
+                seenEdgeIds.add(edgeKey);
+                return true;
             })
             .map((edge: any) => ({
-                id: edge.id || `edge_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                id: edge.id || `edge_${edge.source}_${edge.target}_${Date.now()}`,
                 workflowId: id,
                 sourceNodeId: edge.source,
                 targetNodeId: edge.target,
@@ -137,16 +153,26 @@ export async function PUT(
 
         console.log(`[PUT] Saving workflow ${id}: ${nodesToCreate.length} nodes, ${edgesToCreate.length} edges`);
 
+        const incomingNodeIds = nodesToCreate.map((n: any) => n.id);
+
         const workflow = await prisma.$transaction(async (tx) => {
             await tx.edge.deleteMany({ where: { workflowId: id } });
             await tx.node.deleteMany({ where: { workflowId: id } });
 
+            // Also delete any orphaned nodes with the same IDs from other workflows
+            // This can happen when a previous save partially failed mid-transaction
+            if (incomingNodeIds.length > 0) {
+                await tx.node.deleteMany({
+                    where: { id: { in: incomingNodeIds } }
+                });
+            }
+
             if (nodesToCreate.length > 0) {
-                await tx.node.createMany({ data: nodesToCreate });
+                await tx.node.createMany({ data: nodesToCreate, skipDuplicates: true });
             }
 
             if (edgesToCreate.length > 0) {
-                await tx.edge.createMany({ data: edgesToCreate });
+                await tx.edge.createMany({ data: edgesToCreate, skipDuplicates: true });
             }
 
             return await tx.workflow.update({

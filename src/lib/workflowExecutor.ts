@@ -75,7 +75,7 @@ async function executeNode(
         nodeId,
         workflowRunId,
         inputs: {
-          imageUrl: inputs.imageUrl || inputs.input || "",
+          imageUrl: inputs.imageUrl || inputs.image_url || inputs.input || "",
           xPercent: inputs.xPercent ?? 0,
           yPercent: inputs.yPercent ?? 0,
           widthPercent: inputs.widthPercent ?? 100,
@@ -83,15 +83,18 @@ async function executeNode(
         },
       });
 
-      // Poll until complete
+      // Poll until complete (max 5 minutes)
       let run = await runs.retrieve(handle.id);
-      while (run.status === "WAITING" || run.status === "DEQUEUED" || run.status === "DELAYED" || run.status === "PENDING_VERSION") {
+      const TERMINAL_STATUSES = ["COMPLETED", "FAILED", "CRASHED", "SYSTEM_FAILURE", "TIMED_OUT", "CANCELED", "EXPIRED"];
+      const IN_PROGRESS_STATUSES = ["WAITING", "DEQUEUED", "DELAYED", "PENDING_VERSION", "QUEUED", "EXECUTING"];
+      let cropAttempts = 0;
+      while (!TERMINAL_STATUSES.includes(run.status) && cropAttempts < 150) {
         await new Promise(r => setTimeout(r, 2000));
         run = await runs.retrieve(handle.id);
+        cropAttempts++;
       }
 
-      const cropFailed = run.status === "FAILED" || run.status === "CRASHED" || run.status === "SYSTEM_FAILURE" || run.status === "TIMED_OUT" || run.status === "CANCELED" || run.status === "EXPIRED";
-      if (cropFailed || run.status !== "COMPLETED" || !run.output?.success) {
+      if (run.status !== "COMPLETED" || !run.output?.success) {
         throw new Error(run.output?.error || `Crop image task ended with status: ${run.status}`);
       }
 
@@ -110,20 +113,22 @@ async function executeNode(
         nodeId,
         workflowRunId,
         inputs: {
-          videoUrl: inputs.videoUrl || inputs.input || "",
+          videoUrl: inputs.videoUrl || inputs.video_url || inputs.input || "",
           timestamp: inputs.timestamp || "50%",
         },
       });
 
-      // Poll until complete
+      // Poll until complete (max 5 minutes)
       let run = await runs.retrieve(handle.id);
-      while (run.status === "WAITING" || run.status === "DEQUEUED" || run.status === "DELAYED" || run.status === "PENDING_VERSION") {
+      const EXTRACT_TERMINAL = ["COMPLETED", "FAILED", "CRASHED", "SYSTEM_FAILURE", "TIMED_OUT", "CANCELED", "EXPIRED"];
+      let extractAttempts = 0;
+      while (!EXTRACT_TERMINAL.includes(run.status) && extractAttempts < 150) {
         await new Promise(r => setTimeout(r, 2000));
         run = await runs.retrieve(handle.id);
+        extractAttempts++;
       }
 
-      const extractFailed = run.status === "FAILED" || run.status === "CRASHED" || run.status === "SYSTEM_FAILURE" || run.status === "TIMED_OUT" || run.status === "CANCELED" || run.status === "EXPIRED";
-      if (extractFailed || run.status !== "COMPLETED" || !run.output?.success) {
+      if (run.status !== "COMPLETED" || !run.output?.success) {
         throw new Error(run.output?.error || `Extract frame task ended with status: ${run.status}`);
       }
 

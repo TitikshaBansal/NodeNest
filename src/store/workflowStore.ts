@@ -135,7 +135,16 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   historyIndex: -1,
 
   setWorkflowId: (id) => set({ workflowId: id }),
-  setNodes: (nodes) => set({ nodes }),
+  setNodes: (nodes) => {
+    // Deduplicate by ID to prevent unique constraint errors on save
+    const seen = new Set<string>();
+    const unique = nodes.filter(n => {
+      if (seen.has(n.id)) return false;
+      seen.add(n.id);
+      return true;
+    });
+    set({ nodes: unique });
+  },
   setEdges: (edges) => set({ edges }),
 
   onNodesChange: (changes) => {
@@ -360,40 +369,41 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   },
 
   loadSampleWorkflow: () => {
-    // Car Analysis Workflow Sample
+    // Product Marketing Kit Generator - Demonstrates parallelism
     const sampleNodes: WorkflowNode[] = [
-      // Image node
+      // Input nodes
       {
-        id: "img_car",
+        id: "img_product",
         type: "image",
         position: { x: 50, y: 150 },
         data: {
-          label: "Car Image",
-          imageUrl: "/images/car.jpg",
+          label: "Product Photo",
+          imageUrl: "/images/cetaphil-sample.jpg",
           imageBase64: null,
         },
       },
-      // Text node
       {
-        id: "text_prompt",
+        id: "text_specs",
         type: "text",
-        position: { x: 50, y: 350 },
+        position: { x: 50, y: 400 },
         data: {
-          label: "Analysis Prompt",
+          label: "Product Name & Specs",
           content:
-            "analyse the image, identify the vehicle in it, and give detailed information about the vehicle including company, pricing, make, engine, etc",
+            "Cetaphil Paraben, Sulphate-Free Gentle Skin Hydrating Face Wash Cleanser with Niacinamide, Vitamin B5 for Dry to Normal, Sensitive Skin - 125ml",
         },
       },
-      // Main LLM node (analyze)
+      // Main analysis LLM (convergence point)
       {
         id: "llm_analyze",
         type: "llm",
-        position: { x: 400, y: 250 },
+        position: { x: 450, y: 200 },
         data: {
-          label: "Analyze Vehicle",
+          label: "Analyze Product",
           model: "gemini-1.5-pro",
-          systemPrompt: "You are an expert automobile analyst. Analyze the image and the prompt to identify the vehicle and provide detailed information.",
-          userMessage: "analyse the image, identify the vehicle in it, and give detailed information about the vehicle including company, pricing, make, engine, etc",
+          systemPrompt:
+            "You are a product analyst. Analyze the product image and specifications provided. Extract key selling points, target audience, and product benefits.",
+          userMessage:
+            "Analyze this product and provide: 1) Key selling points 2) Target audience 3) Product benefits 4) Competitive advantages",
           response: null,
           generatedImage: null,
           isLoading: false,
@@ -401,16 +411,17 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           imageInputCount: 1,
         },
       },
-      // LLM node: Critic Report
+      // Parallel content generation LLMs (demonstrates parallelism)
       {
-        id: "llm_critic",
+        id: "llm_instagram",
         type: "llm",
-        position: { x: 800, y: 150 },
+        position: { x: 900, y: 50 },
         data: {
-          label: "Critic Report (India)",
+          label: "Write Instagram Caption",
           model: "gemini-1.5-pro",
-          systemPrompt: "you are an automobile enthusiast, write a brief critic report for this vehicle according to indian market and audience",
-          userMessage: "Write a brief critic report for this vehicle for the Indian market and audience.",
+          systemPrompt: "Write engaging Instagram captions for products. Include relevant hashtags and call-to-action.",
+          userMessage:
+            "Create an engaging Instagram caption for this product with relevant hashtags. Make it compelling and shareable.",
           response: null,
           generatedImage: null,
           isLoading: false,
@@ -418,16 +429,33 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           imageInputCount: 1,
         },
       },
-      // LLM node: Reviews & Pricing
       {
-        id: "llm_reviews",
+        id: "llm_seo",
         type: "llm",
-        position: { x: 800, y: 350 },
+        position: { x: 900, y: 320 },
         data: {
-          label: "Reviews & Pricing (India)",
+          label: "Write SEO Meta Description",
           model: "gemini-1.5-pro",
-          systemPrompt: "gather online reviews and other references and general pricing for this vehicle in india.",
-          userMessage: "Gather online reviews, references, and general pricing for this vehicle in India.",
+          systemPrompt: "Write SEO-optimized meta descriptions. Keep under 160 characters, include keywords, and be compelling.",
+          userMessage:
+            "Write an SEO-optimized meta description (under 160 characters) for this product. Include key features and benefits.",
+          response: null,
+          generatedImage: null,
+          isLoading: false,
+          error: null,
+          imageInputCount: 1,
+        },
+      },
+      {
+        id: "llm_amazon",
+        type: "llm",
+        position: { x: 900, y: 590 },
+        data: {
+          label: "Write Amazon Listing",
+          model: "gemini-1.5-pro",
+          systemPrompt: "Write compelling Amazon product listings. Include title, bullet points, and detailed description.",
+          userMessage:
+            "Based on the product analysis, write a compelling Amazon product listing with: 1) Title (optimized for search) 2) 5 bullet points (key features) 3) Detailed description (benefits and usage)",
           response: null,
           generatedImage: null,
           isLoading: false,
@@ -441,37 +469,47 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       // Image → LLM Analyze (Image input)
       {
         id: "e1",
-        source: "img_car",
+        source: "img_product",
         target: "llm_analyze",
         targetHandle: "images-0",
         animated: true,
         style: { stroke: "#34d399", strokeWidth: 2 },
       },
-      // Text Prompt → LLM Analyze (User message input)
+      // Text Specs → LLM Analyze (User message input)
       {
         id: "e2",
-        source: "text_prompt",
+        source: "text_specs",
         target: "llm_analyze",
         targetHandle: "user_message",
         animated: true,
         style: { stroke: "#c084fc", strokeWidth: 2 },
       },
-      // LLM Analyze → Critic Report (User message input)
+      // LLM Analyze → Write Amazon (User message input)
       {
         id: "e3",
         source: "llm_analyze",
         sourceHandle: "output",
-        target: "llm_critic",
+        target: "llm_amazon",
         targetHandle: "user_message",
         animated: true,
         style: { stroke: "#c084fc", strokeWidth: 2 },
       },
-      // LLM Analyze → Reviews & Pricing (User message input)
+      // LLM Analyze → Write Instagram (User message input)
       {
         id: "e4",
         source: "llm_analyze",
         sourceHandle: "output",
-        target: "llm_reviews",
+        target: "llm_instagram",
+        targetHandle: "user_message",
+        animated: true,
+        style: { stroke: "#c084fc", strokeWidth: 2 },
+      },
+      // LLM Analyze → Write SEO (User message input)
+      {
+        id: "e5",
+        source: "llm_analyze",
+        sourceHandle: "output",
+        target: "llm_seo",
         targetHandle: "user_message",
         animated: true,
         style: { stroke: "#c084fc", strokeWidth: 2 },
@@ -479,8 +517,8 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     ];
 
     set({
-      workflowId: "sample_car_analysis",
-      workflowName: "Car Analysis & Market Report",
+      workflowId: "sample_product_marketing_kit",
+      workflowName: "Product Marketing Kit Generator",
       nodes: sampleNodes,
       edges: sampleEdges,
       history: [],
