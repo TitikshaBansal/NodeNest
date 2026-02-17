@@ -64,6 +64,10 @@ async function executeNode(
     }
 
     if (nodeType === "cropImage" || nodeType === "crop") {
+      if (!process.env.TRIGGER_SECRET_KEY) {
+        console.warn("[Executor] TRIGGER_SECRET_KEY not set, skipping crop");
+        return { success: true, output: inputs.imageUrl || inputs.input || "", duration: Date.now() - startTime };
+      }
       const { runs } = await import("@trigger.dev/sdk");
       const { cropImage } = await import("../trigger/tasks/cropImage");
 
@@ -95,6 +99,10 @@ async function executeNode(
     }
 
     if (nodeType === "extractFrame") {
+      if (!process.env.TRIGGER_SECRET_KEY) {
+        console.warn("[Executor] TRIGGER_SECRET_KEY not set, skipping extractFrame");
+        return { success: true, output: inputs.videoUrl || inputs.input || "", duration: Date.now() - startTime };
+      }
       const { runs } = await import("@trigger.dev/sdk");
       const { extractFrame } = await import("../trigger/tasks/extractFrame");
 
