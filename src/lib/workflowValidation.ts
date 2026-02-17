@@ -4,7 +4,7 @@ import { detectCycles } from "./dag";
 // Workflow validation schema
 const NodeSchema = z.object({
   id: z.string(),
-  type: z.enum(["text", "image", "video", "llm", "cropImage", "extractFrame"]),
+  type: z.enum(["text", "image", "video", "llm", "cropImage", "extractFrame", "crop"]),
   position: z.object({
     x: z.number(),
     y: z.number(),
